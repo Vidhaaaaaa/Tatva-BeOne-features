@@ -1,19 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <img src="/logo.png" alt="TatvaCare Logo" className="logo-img" /> {/* Replace with actual logo path */}
-        <span className="logo-text">tatvacare</span>
+        <img src="/tatva-icon.svg" alt="TatvaCare Logo" className="logo-img" />
+        <span className="logo-text">Tatva</span>
       </div>
       <ul className="navbar-menu">
         <li><a href="#solutions">Solutions</a></li>
         <li><a href="#products">Products</a></li>
         <li><a href="#abha">ABHA</a></li>
         <li><a href="#blogs">Blogs</a></li>
-        <li><a href="#about">About Us</a></li>
+        <li>
+          <Link to="/feedback" className="navbar-link">About Us</Link>
+        </li>
       </ul>
     </nav>
   );
