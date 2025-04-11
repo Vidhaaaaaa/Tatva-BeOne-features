@@ -1,4 +1,5 @@
 import React from 'react';
+import './main_window.css';
 
 const main_window: React.FC = () => {
   return (
