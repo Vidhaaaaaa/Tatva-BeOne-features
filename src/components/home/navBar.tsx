@@ -1,22 +1,22 @@
 import React from 'react';
-import './navBar.css';
+import './Navbar.css';
 
-const NavBar: React.FC = () => {
+const Navbar: React.FC = () => {
   return (
-    <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
-      <div className="flex items-center">
-        <img src="/logo.png" alt="TatvaCare Logo" className="h-10" /> {/* Replace with actual logo path */}
-        <span className="text-xl font-bold text-purple-700 ml-2">tatvacare</span>
+    <nav className="navbar">
+      <div className="navbar-logo">
+        <img src="/logo.png" alt="TatvaCare Logo" className="logo-img" /> {/* Replace with actual logo path */}
+        <span className="logo-text">tatvacare</span>
       </div>
-      <ul className="flex space-x-6 text-gray-600">
-        <li><a href="#solutions" className="hover:text-purple-700">Solutions</a></li>
-        <li><a href="#products" className="hover:text-purple-700">Products</a></li>
-        <li><a href="#abha" className="hover:text-purple-700">ABHA</a></li>
-        <li><a href="#blogs" className="hover:text-purple-700">Blogs</a></li>
-        <li><a href="#about" className="hover:text-purple-700">About Us</a></li>
+      <ul className="navbar-menu">
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#abha">ABHA</a></li>
+        <li><a href="#blogs">Blogs</a></li>
+        <li><a href="#about">About Us</a></li>
       </ul>
     </nav>
   );
 };
 
-export default NavBar;
+export default Navbar;
