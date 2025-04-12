@@ -1,6 +1,23 @@
 .feedback-container {
-    max-width: 600px;
-    margin: 2rem auto;
+    display: flex;
+    /* max-width: 600px; */
+    /* margin: 2rem auto; */
+    /* padding: 2rem; */
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px #0000001a;
+    text-align: center;
+  }
+
+  .feed_1{
+    flex: 1;
+    object-fit: cover;
+  }
+
+  .feed_2{
+    flex: 1;
+    /* max-width: 600px; */
+    /* margin: 2rem auto; */
     padding: 2rem;
     background-color: #ffffff;
     border-radius: 0.5rem;

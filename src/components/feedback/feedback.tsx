@@ -12,16 +12,22 @@ const Feedback: React.FC = () => {
 
   return (
     <div className="feedback-container">
-      <h2 className="feedback-title">Feedback</h2>
-      <textarea
-        className="feedback-textbox"
-        value={feedbackText}
-        onChange={(e) => setFeedbackText(e.target.value)}
-        placeholder="Enter your feedback here..."
-      />
-      <button className="feedback-submit" onClick={handleSubmit}>
-        Submit
-      </button>
+      <div className='feed_1'>
+        <img 
+        src='/feedback_sideImage.jpg'/>
+      </div>
+      <div className='feed_2'>
+        <h2 className="feedback-title">Feedback</h2>
+        <textarea
+          className="feedback-textbox"
+          value={feedbackText}
+          onChange={(e) => setFeedbackText(e.target.value)}
+          placeholder="Enter your feedback here..."
+        />
+        <button className="feedback-submit" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
     </div>
   );
 };
