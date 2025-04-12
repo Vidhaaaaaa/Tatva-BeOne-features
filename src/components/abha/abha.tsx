@@ -6,7 +6,7 @@ const ABHA: React.FC = () => {
 
   return (
     <>
-    <div>
+    <div className='chatBot'>
       <h1>Tatva Chatbot</h1>
       <Chatbot />
     </div>
