@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
+import './chatbot.css';
 
 const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
@@ -9,7 +10,6 @@ const Chatbot: React.FC = () => {
   const [chat, setChat] = useState<any>(null);
 
   useEffect(() => {
-    // Initialize Gemini
     const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_API_KEY);
     const geminiModel = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
@@ -34,7 +34,6 @@ const Chatbot: React.FC = () => {
     });
     setModel(geminiModel);
 
-    // Start a new chat
     const newChat = geminiModel.startChat({
       history: [],
       generationConfig: {
@@ -85,54 +84,48 @@ const Chatbot: React.FC = () => {
   };
 
   return (
-    <div className="p-4 max-w-2xl mx-auto space-y-4">
-      <div className="bg-white shadow-lg rounded-lg p-6">
-        <div className="mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">Gemini Chat</h2>
-          <p className="text-sm text-gray-600">Powered by Google AI</p>
+    <div className="chatbot-container">
+      <div className="chatbot-card">
+        <div className="chatbot-header">
+          <h2 className="chatbot-title">ABHA</h2>
+          <p className="chatbot-subtitle">Your Wellness ChatBot</p>
         </div>
-        <div className="bg-gray-50 p-4 rounded-lg h-[400px] overflow-y-auto mb-4">
+        <div className="chatbot-messages">
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`mb-3 p-3 rounded-lg ${
-                msg.role === 'user'
-                  ? 'bg-blue-100 ml-auto max-w-[80%]'
-                  : 'bg-white shadow-sm max-w-[80%]'
+              className={`chatbot-message ${
+                msg.role === 'user' ? 'chatbot-message-user' : 'chatbot-message-assistant'
               }`}
             >
-              <div className="text-sm font-semibold mb-1 text-gray-700">
-                {msg.role === 'user' ? 'You' : 'Gemini'}
+              <div className="chatbot-message-sender">
+                {msg.role === 'user' ? 'You' : 'ABHA'}
               </div>
-              <div className="text-gray-800 whitespace-pre-wrap">{msg.content}</div>
+              <div className="chatbot-message-content">{msg.content}</div>
             </div>
           ))}
           {isLoading && (
-            <div className="flex items-center space-x-2 text-gray-500">
-              <div className="animate-pulse">Thinking</div>
-              <div className="animate-bounce">.</div>
-              <div className="animate-bounce delay-100">.</div>
-              <div className="animate-bounce delay-200">.</div>
+            <div className="chatbot-loading">
+              <div className="chatbot-loading-text">Thinking</div>
+              <div className="chatbot-loading-dot">.</div>
+              <div className="chatbot-loading-dot chatbot-loading-dot-delay-1">.</div>
+              <div className="chatbot-loading-dot chatbot-loading-dot-delay-2">.</div>
             </div>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="chatbot-input-container">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
             placeholder="Type your message..."
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="chatbot-input"
             disabled={isLoading}
           />
           <button
             onClick={handleSend}
-            className={`px-6 py-2 rounded-lg font-medium ${
-              isLoading
-                ? 'bg-gray-300 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
-            }`}
+            className={`chatbot-button ${isLoading ? 'chatbot-button-disabled' : ''}`}
             disabled={isLoading}
           >
             Send

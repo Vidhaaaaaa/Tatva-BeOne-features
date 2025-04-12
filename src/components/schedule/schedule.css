@@ -1,0 +1,68 @@
+.schedule-container {
+    /* max-width: 800px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    object-fit:scale-down;
+    padding: 20px;
+    /* font-family: Arial, sans-serif; */
+  }
+
+.schedule-container img{
+    width: 1300px;
+}
+/* .schedule-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .auth-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .auth-button:hover {
+    background-color: #357ae8;
+  }
+  
+  .events-list {
+    margin-top: 20px;
+  }
+  
+  .event-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .event-item h3 {
+    margin: 0 0 10px;
+    color: #222;
+  }
+  
+  .event-item p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+  } */
