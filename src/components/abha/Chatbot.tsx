@@ -1,102 +1,143 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 
 const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [model, setModel] = useState<any>(null);
+  const [chat, setChat] = useState<any>(null);
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
-
-    const userMessage = { role: 'user', content: input };
-
-    // Add a default system message if it's the first message
-    const systemPrompt = {
-      role: 'system',
-      content: 'You are a helpful assistant.',
-    };
-
-    const newMessages =
-      messages.length === 0
-        ? [systemPrompt, userMessage]
-        : [...messages, userMessage];
-
-    setMessages(newMessages);
-    setInput('');
-
-    try {
-      console.log(import.meta.env.VITE_DEEPSEEK_API_KEY)
-      const response = await axios.post(
-        'https://api.deepseek.com/v1/chat/completions',
+  useEffect(() => {
+    // Initialize Gemini
+    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_API_KEY);
+    const geminiModel = genAI.getGenerativeModel({
+      model: "gemini-1.5-pro",
+      safetySettings: [
         {
-          model: 'deepseek-reasoner',
-          messages: newMessages,
-          stream: false,
+          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
         },
         {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${import.meta.env.VITE_DEEPSEEK_API_KEY}`,
-          }, 
-        }
-      );
+          category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+        },
+      ],
+    });
+    setModel(geminiModel);
 
-      console.log('API response:', response.data);
+    // Start a new chat
+    const newChat = geminiModel.startChat({
+      history: [],
+      generationConfig: {
+        maxOutputTokens: 2000,
+        temperature: 0.7,
+      },
+    });
+    setChat(newChat);
+  }, []);
 
-      const reply = response.data?.choices?.[0]?.message;
+  const handleSend = async () => {
+    if (!input.trim() || isLoading || !model || !chat) return;
 
-      if (reply && reply.content) {
-        setMessages([...newMessages, reply]);
-      } else {
-        setMessages([
-          ...newMessages,
-          { role: 'assistant', content: 'Sorry, no reply received.' },
-        ]);
-      }
+    const userMessage = { role: 'user', content: input };
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
 
-    } catch (error: any) {
-      console.error('Network error:', error);
+    try {
+      const result = await chat.sendMessage(input);
+      const response = await result.response;
+      const text = response.text();
 
-      if (error.response) {
-        console.error('Response error status:', error.response.status);
-        console.error('Response error data:', error.response.data);
-      } else if (error.request) {
-        console.error('Request error:', error.request);
-      } else {
-        console.error('Error during request setup:', error.message);
-      }
-
-      setMessages([
-        ...newMessages,
-        { role: 'assistant', content: 'Error: ' + error.message },
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: text }
       ]);
+    } catch (error: any) {
+      console.error('Error:', error);
+      
+      let errorMessage = 'An error occurred while processing your request.';
+      
+      if (error.message?.includes('quota')) {
+        errorMessage = 'API quota exceeded. Please try again later.';
+      } else if (error.message?.includes('key')) {
+        errorMessage = 'Invalid API key. Please check your API key configuration.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: 'Error: ' + errorMessage },
+      ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto space-y-4">
-      <div className="bg-gray-100 p-4 rounded-md h-64 overflow-y-auto">
-        {messages.map((msg, idx) => (
-          <div key={idx} className="mb-2">
-            <strong>{msg.role}:</strong> {msg.content}
-          </div>
-        ))}
-      </div>
-      <div className="flex gap-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="Type your message..."
-          className="flex-1 border border-gray-300 rounded-md px-3 py-2"
-        />
-        <button
-          onClick={handleSend}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        >
-          Send
-        </button>
+    <div className="p-4 max-w-2xl mx-auto space-y-4">
+      <div className="bg-white shadow-lg rounded-lg p-6">
+        <div className="mb-4">
+          <h2 className="text-2xl font-bold text-gray-800">Gemini Chat</h2>
+          <p className="text-sm text-gray-600">Powered by Google AI</p>
+        </div>
+        <div className="bg-gray-50 p-4 rounded-lg h-[400px] overflow-y-auto mb-4">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`mb-3 p-3 rounded-lg ${
+                msg.role === 'user'
+                  ? 'bg-blue-100 ml-auto max-w-[80%]'
+                  : 'bg-white shadow-sm max-w-[80%]'
+              }`}
+            >
+              <div className="text-sm font-semibold mb-1 text-gray-700">
+                {msg.role === 'user' ? 'You' : 'Gemini'}
+              </div>
+              <div className="text-gray-800 whitespace-pre-wrap">{msg.content}</div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="flex items-center space-x-2 text-gray-500">
+              <div className="animate-pulse">Thinking</div>
+              <div className="animate-bounce">.</div>
+              <div className="animate-bounce delay-100">.</div>
+              <div className="animate-bounce delay-200">.</div>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
+            placeholder="Type your message..."
+            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isLoading}
+          />
+          <button
+            onClick={handleSend}
+            className={`px-6 py-2 rounded-lg font-medium ${
+              isLoading
+                ? 'bg-gray-300 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
+            disabled={isLoading}
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
