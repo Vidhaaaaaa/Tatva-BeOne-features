@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import './App.css';
 import React from 'react';
-import Chatbot from './Chatbot.tsx';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import NavBar from './components/home/navBar.tsx'
+import Home_Main from './components/home/main_window.tsx'
+import Footer from './components/home/footer.tsx'
 
-function App() {
-  const [count, setCount] = useState(0)
+import Points from './components/points/points.tsx';
+import Schedule from './components/schedule/schedule.tsx';
+import ABHA from './components/abha/abha.tsx';
+import Hub from './components/hub/hub.tsx';
+import Feedback from './components/feedback/feedback.tsx';
 
+const App: React.FC = () => {
   return (
     <Router>
       <div className="app-container">
         <NavBar />
         <Routes>
+
           <Route path="/" element={<Home_Main />} />
+
+          <Route path="/points" element={<Points />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/abha" element={<ABHA />} />
+          <Route path="/hub" element={<Hub />} />
           <Route path="/feedback" element={<Feedback />} />
-          {/* Add more routes as needed for other pages (e.g., abha, home) */}
+          
         </Routes>
         <Footer />
       </div>
     </Router>
-  );
-};
-
-const App: React.FC = () => {
-  return (
-    <div>
-      <h1>Tatva Chatbot</h1>
-      <Chatbot />
-    </div>
   );
 };
 

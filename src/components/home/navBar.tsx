@@ -6,16 +6,25 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <img src="/tatva-icon.svg" alt="TatvaCare Logo" className="logo-img" />
-        <span className="logo-text">Tatva</span>
+        <Link to="/" className="navbar-link">
+          <img src="/tatva-icon.svg" alt="TatvaCare Logo" className="logo-img" />
+          <span className="logo-text">Tatva</span>
+        </Link>
       </div>
       <ul className="navbar-menu">
-        <li><a href="#solutions">Solutions</a></li>
-        <li><a href="#products">Products</a></li>
-        <li><a href="#abha">ABHA</a></li>
-        <li><a href="#blogs">Blogs</a></li>
+        <li><a href="#solutions">Points</a></li>
+        <li><a href="#products">Schedule</a></li>
+
         <li>
-          <Link to="/feedback" className="navbar-link">About Us</Link>
+            <Link to="/abha" className="navbar-link">ABHA</Link>
+        </li>
+
+        <li>
+            <Link to="/hub" className="navbar-link">Hub</Link>
+        </li>
+
+        <li>
+          <Link to="/feedback" className="navbar-link">Feedback</Link>
         </li>
       </ul>
     </nav>
