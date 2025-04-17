@@ -1,3 +1,4 @@
+@import "tailwindcss";
 .schedule-container {
     /* max-width: 800px; */
     display: flex;
