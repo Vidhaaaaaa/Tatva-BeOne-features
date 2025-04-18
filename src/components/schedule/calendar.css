@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&family=Material+Icons&display=block');
+
+.calendar {
+  width: 100%;
+  min-width: 28rem;
+  /* height: calc(55% - 2rem); */
+  background-color: #111214;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: grid;
+  place-items: center;
+}
+
+.navigate_date {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 1rem;
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.navigate_date h2 {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #9ca3af;
+}
+
+.buttons {
+  display: flex;
+  column-gap: 1rem;
+  margin-left: auto;
+}
+
+.buttons .material-symbols-outlined {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2c3542;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: #b88efc;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.buttons .material-symbols-outlined:hover {
+  background-color: #374151;
+}
+
+.weekdays {
+  width: 100%;
+  display: flex;
+}
+
+.weekdays span {
+  width: calc(100% / 7);
+  font-size: 1.125rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: #6b7280;
+  letter-spacing: 0.1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.days span {
+  width: calc(100% / 7);
+  aspect-ratio: 1;
+  font-size: 1.125rem;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.days span:hover {
+  background-color: #2c3542;
+  border-radius: 50%;
+}
+
+.days span.current_day {
+  font-size: 1.5rem;
+  color: #ffffff;
+  background: linear-gradient(to right, #b88efc, #6877f4);
+  border-radius: 50%;
+}
+
+.event_indicator {
+  position: absolute;
+  bottom: 0.25rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #7c3aed;
+  border-radius: 50%;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}

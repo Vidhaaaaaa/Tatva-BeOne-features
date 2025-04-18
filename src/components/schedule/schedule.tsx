@@ -1,130 +1,77 @@
-import React from 'react';
-// import { gapi } from 'gapi-script';
+import React, { useState } from 'react';
+import Calendar from './calendar.tsx';
 import './schedule.css';
 
-// interface CalendarEvent {
-//   id: string;
-//   summary: string;
-//   start: { dateTime?: string; date?: string };
-//   end: { dateTime?: string; date?: string };
-// }
+interface Event {
+  date: string;
+  description: string;
+}
 
 const Schedule: React.FC = () => {
-  // const [events, setEvents] = useState<CalendarEvent[]>([]);
-  // const [isSignedIn, setIsSignedIn] = useState(false);
-  // const [error, setError] = useState<string | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [newEventDate, setNewEventDate] = useState('');
+  const [newEventDescription, setNewEventDescription] = useState('');
 
-  // const CLIENT_ID = process.env.REACT_APP_CLIENT_ID || '';
-  // const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY || '';
-  // const CALENDAR_ID = process.env.REACT_APP_CALENDAR_ID || 'primary';
-  // const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
-  // const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+  const handleAddEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (newEventDate && newEventDescription) {
+      setEvents([...events, { date: newEventDate, description: newEventDescription }]);
+      setNewEventDate('');
+      setNewEventDescription('');
+    }
+  };
 
-  // Initialize Google API client
-  // const initClient = () => {
-  //   gapi.load('client:auth2', () => {
-  //     gapi.client
-  //       .init({
-  //         apiKey: API_KEY,
-  //         clientId: CLIENT_ID,
-  //         discoveryDocs: DISCOVERY_DOCS,
-  //         scope: SCOPES,
-  //       })
-  //       .then(() => {
-  //         const authInstance = gapi.auth2.getAuthInstance();
-  //         setIsSignedIn(authInstance.isSignedIn.get());
-  //         authInstance.isSignedIn.listen(setIsSignedIn);
-  //         if (authInstance.isSignedIn.get()) {
-  //           fetchEvents();
-  //         }
-  //       })
-  //       .catch((err: any) => {
-  //         setError('Failed to initialize Google API client');
-  //         console.error(err);
-  //       });
-  //   });
-  // };
-
-  // Fetch events from Google Calendar
-  // const fetchEvents = () => {
-  //   gapi.client.calendar.events
-  //     .list({
-  //       calendarId: CALENDAR_ID,
-  //       timeMin: new Date().toISOString(),
-  //       showDeleted: false,
-  //       singleEvents: true,
-  //       maxResults: 10,
-  //       orderBy: 'startTime',
-  //     })
-  //     .then((response: any) => {
-  //       const events = response.result.items || [];
-  //       setEvents(events);
-  //     })
-  //     .catch((err: any) => {
-  //       setError('Failed to fetch events');
-  //       console.error(err);
-  //     });
-  // };
-
-  // Handle sign-in
-  // const handleSignIn = () => {
-  //   gapi.auth2.getAuthInstance().signIn();
-  // };
-
-  // Handle sign-out
-  // const handleSignOut = () => {
-  //   gapi.auth2.getAuthInstance().signOut();
-  // };
-
-  // Load Google API client on component mount
-  // useEffect(() => {
-  //   initClient();
-  // }, []);
-
-  // Format event date for display
-  // const formatDate = (dateTime?: string, date?: string) => {
-  //   if (dateTime) {
-  //     return new Date(dateTime).toLocaleString();
-  //   }
-  //   if (date) {
-  //     return new Date(date).toLocaleDateString();
-  //   }
-  //   return 'N/A';
-  // };
+  const eventsForSelectedDate = selectedDate
+    ? events.filter((event) => event.date === selectedDate)
+    : [];
 
   return (
-    // <div className="schedule-container">
-    //   <h2>Schedule</h2>
-    //   {error && <p className="error">{error}</p>}
-    //   {!isSignedIn ? (
-    //     <button onClick={handleSignIn} className="auth-button">
-    //       Sign in with Google
-    //     </button>
-    //   ) : (
-    //     <>
-    //       <button onClick={handleSignOut} className="auth-button">
-    //         Sign out
-    //       </button>
-    //       <div className="events-list">
-    //         {events.length > 0 ? (
-    //           events.map((event) => (
-    //             <div key={event.id} className="event-item">
-    //               <h3>{event.summary || 'No title'}</h3>
-    //               <p>
-    //                 Start: {formatDate(event.start.dateTime, event.start.date)}
-    //               </p>
-    //               <p>End: {formatDate(event.end.dateTime, event.end.date)}</p>
-    //             </div>
-    //           ))
-    //         ) : (
-    //           <p>No upcoming events found.</p>
-    //         )}
-    //       </div>
-    //     </>
-    //   )}
-    // </div>
-    <div className="schedule-container">
-      <img src='/calendar.png' />
+    <div className="schedule">
+      <div className="schedule_container">
+        <h1 className="schedule_title">Schedule</h1>
+        <div className="schedule_layout">
+          <div className="calendar_wrapper">
+            <Calendar
+              events={events}
+              onDateClick={(date) => setSelectedDate(date)}
+            />
+          </div>
+          <div className="event_form">
+            <h2 className="event_form_title">Add Event</h2>
+            <div className="event_form_fields">
+              <input
+                type="date"
+                value={newEventDate}
+                onChange={(e) => setNewEventDate(e.target.value)}
+                required
+              />
+              <input
+                type="text"
+                value={newEventDescription}
+                onChange={(e) => setNewEventDescription(e.target.value)}
+                placeholder="Event description"
+                required
+              />
+              <button onClick={handleAddEvent}>Add Event</button>
+            </div>
+          </div>
+        </div>
+        {selectedDate && (
+          <div className="event_list">
+            <h2 className="event_list_title">Events for {selectedDate}</h2>
+            {eventsForSelectedDate.length > 0 ? (
+              <ul className="event_list_items">
+                {eventsForSelectedDate.map((event, index) => (
+                  <li key={index}>{event.description}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="event_list_empty">No events for this date.</p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
