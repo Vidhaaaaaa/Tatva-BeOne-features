@@ -4,7 +4,7 @@ import './points.css';
 const Points: React.FC = () => {
   return (
     <section className="point-container">
-      <h1 className="point-heading">Daily Streak  6🔥</h1>
+      <h1 className="point-heading">Daily Streak  7🔥</h1>
 
       <ul className="point-benefits">
         <li className="point-benefit-item">

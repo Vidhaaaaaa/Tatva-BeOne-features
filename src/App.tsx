@@ -10,6 +10,8 @@ import Hub from './components/hub/hub.tsx';
 import Feedback from './components/feedback/feedback.tsx';
 
 import Landing from './components/landing/landing.tsx';
+import Pricing from './components/pricing/pricing.tsx';
+import Support from './components/support/support.tsx';
 import Login from './components/Login/login.tsx';
 
 // Custom component to conditionally render Navbar
@@ -18,9 +20,11 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="app-container">
-      {!(location.pathname === '/' || location.pathname === '/login') && <Navbar />}
+      {!(location.pathname === '/' || location.pathname === '/login' || location.pathname === '/pricing' || location.pathname === '/support') && <Navbar />}
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/support" element={<Support />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<HomeMain />} />
         <Route path="/points" element={<Points />} />

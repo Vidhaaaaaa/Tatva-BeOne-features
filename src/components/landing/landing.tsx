@@ -63,7 +63,7 @@ const Landing: React.FC = () => {
     <>
       <nav className="navigation">
         <div className="flex items-center">
-          <Link to="/home" className="no-underline text-gray-600 text-base flex items-center hover:text-purple-600">
+          <Link to="/" className="no-underline text-gray-600 text-base flex items-center hover:text-purple-600">
             <img src="/tatva-icon.svg" alt="TatvaCare Logo" className="h-10" />
             <span className="text-xl font-bold text-purple-600 ml-2">Tatva</span>
           </Link>
@@ -88,7 +88,7 @@ const Landing: React.FC = () => {
         <section className="tatvacare">
           <div className='intro_content'>
             <h1>Let's make every day better!</h1>
-            <p>TatvaCare is a digital system that empowers both healthcare professionals and individuals with chronic conditions to create healthy habits leading to positive health outcomes.</p>
+            <p>Tatva BeOne is a digital system that empowers both healthcare professionals and individuals with chronic conditions to create healthy habits leading to positive health outcomes.</p>
             <div className="buttons">
               <button>For Individuals</button>
               <button>For Healthcare Professionals</button>
