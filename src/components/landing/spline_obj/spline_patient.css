@@ -1,0 +1,6 @@
+.spline-scene{
+    display: flex;
+    justify-content: flex-end;
+    height: 500px;
+    /* transform: rotate3d(0, 0, 0, 100deg); */
+}
